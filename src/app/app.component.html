@@ -1,17 +1,22 @@
 <div class="video-container" id="videoContainer">
+  <div class="volume-container">
+    <button *ngIf="!this.isMuted" (click)="toggleMute()" type="button">VolumeOn</button>
+    <button *ngIf="this.isMuted" (click)="toggleMute()" type="button">VolumeOff</button>
+    <input id="volume-slider" class="volume-slider" type="range" min="0" max="1" step="any" (input)="onSliderChange($event)" [value]="sliderValue$.value" />
+  </div>
   <div class="video-controls" data-state="hidden">
-    <div class="timeline"></div>
     <div class="controls">
       <div class="controls-left">
         <button *ngIf="!isVideoPlaying" (click)="toggleVideo()" class="play" type="button" data-state="play">Play
         </button>
         <button *ngIf="isVideoPlaying" (click)="toggleVideo()" class="play" type="button" data-state="play">Pause
         </button>
-        <div class="volume-container">
-          <button *ngIf="!this.isMuted" (click)="toggleMute()" type="button">VolumeOn</button>
-          <button *ngIf="this.isMuted" (click)="toggleMute()" type="button">VolumeOff</button>
-          <input id="volume-slider" class="volume-slider" type="range" min="0" max="1" step="any" (input)="onSliderChange($event)" [value]="sliderValue$.value" />
-        </div>
+        <button (click)="skip(-10)" type="button">-10</button>
+        <button (click)="skip(10)" type="button">+10</button>
+      </div>
+      <div class="timeline">
+        <img class="preview-img">
+        <div class="thumb-indicator"></div>
       </div>
       <div class="controls-right">
         <button id="pinp" type="button">Picture in picture</button>
@@ -20,7 +25,7 @@
 
     </div>
   </div>
-  <video (click)="toggleVideo()" id="videoScreen">
+  <video (click)="toggleVideo()" id="videoScreen" (timeupdate)="updateTime()">
     <source src="{{videoSource}}" type="video/mp4"/>
   </video>
 </div>

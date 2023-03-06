@@ -17,6 +17,8 @@ export class AppComponent implements AfterViewInit, OnInit {
   video!: HTMLVideoElement;
   videoContainer!: HTMLDivElement;
   sliderValue$!: BehaviorSubject<number>;
+  totalTime!: string;
+  currentTime!: string;
 
   ngOnInit() {
     this.sliderValue$ = new BehaviorSubject<number>(100);
@@ -31,6 +33,8 @@ export class AppComponent implements AfterViewInit, OnInit {
     this.sliderValue$.subscribe((value) => {
       this.video.volume = value;
     });
+    this.totalTime = this.formatDuration(this.video.duration);
+    this.currentTime = this.formatDuration(this.video.currentTime);
   }
   toggleVideo() {
     this.isVideoPlaying = !this.isVideoPlaying;
@@ -50,12 +54,34 @@ export class AppComponent implements AfterViewInit, OnInit {
   toggleMute() {
     this.isMuted = !this.isMuted;
     this.video.muted = !this.video.muted;
-    console.log(this.video.muted);
+    console.log(this.video.duration);
   }
 
   onSliderChange(event: Event) {
     const target = event.target as HTMLInputElement;
     const value = parseFloat(target.value);
     this.sliderValue$.next(value);
+  }
+  formatDuration(value: number): string {
+    const seconds = Math.floor(value % 60);
+    const minutes = Math.floor((value / 60) % 60);
+    const hours = Math.floor(value / 3600);
+    if (hours == 0) {
+      return `${minutes}:${this.leadingZeroFormatter.format(seconds)}`;
+    } else
+      return `${hours}:${this.leadingZeroFormatter.format(
+        minutes
+      )}:${this.leadingZeroFormatter.format(seconds)}`;
+  }
+  leadingZeroFormatter = new Intl.NumberFormat(undefined, {
+    minimumIntegerDigits: 2,
+  });
+
+  updateTime() {
+    this.currentTime = this.formatDuration(this.video.currentTime);
+    console.log(this.currentTime);
+  }
+  skip(duration: number) {
+    this.video.currentTime += duration;
   }
 }
