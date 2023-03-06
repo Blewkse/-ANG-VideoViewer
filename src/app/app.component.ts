@@ -16,6 +16,8 @@ export class AppComponent implements AfterViewInit, OnInit {
   isMuted = false;
   video!: HTMLVideoElement;
   videoContainer!: HTMLDivElement;
+  volumeContainer!: HTMLDivElement;
+  videoControls!: HTMLDivElement;
   sliderValue$!: BehaviorSubject<number>;
   totalTime!: string;
   currentTime!: string;
@@ -29,6 +31,12 @@ export class AppComponent implements AfterViewInit, OnInit {
       '#videoContainer'
     ) as HTMLDivElement;
     const slider = document.querySelector('#volume-slider') as HTMLInputElement;
+    this.volumeContainer = document.querySelector(
+      '#volume-container'
+    ) as HTMLDivElement;
+    this.videoControls = document.querySelector(
+      '#video-controls'
+    ) as HTMLDivElement;
 
     this.sliderValue$.subscribe((value) => {
       this.video.volume = value;
@@ -55,6 +63,19 @@ export class AppComponent implements AfterViewInit, OnInit {
     this.isMuted = !this.isMuted;
     this.video.muted = !this.video.muted;
     console.log(this.video.duration);
+  }
+
+  onVideoHoverFinish() {
+    this.volumeContainer.style.opacity = '0';
+    this.videoControls.style.opacity = '0';
+    this.video.style.filter = 'brightness(100%)';
+    this.video.style.cursor = 'none';
+  }
+  onVideoHovering() {
+    this.volumeContainer.style.opacity = '1';
+    this.videoControls.style.opacity = '1';
+    this.video.style.filter = 'brightness(50%)';
+    this.video.style.cursor = 'default';
   }
 
   onSliderChange(event: Event) {
