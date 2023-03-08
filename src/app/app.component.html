@@ -14,9 +14,12 @@
         <button (click)="skip(-10)" type="button">-10</button>
         <button (click)="skip(10)" type="button">+10</button>
       </div>
-      <div class="timeline">
+      <div class="timeline" id="timeline">
+        <span class="timeIndicator" [ngStyle]="{'right':currentTimeTimeline}">{{currentTime}}</span>
+        <div class="thumb-indicator" [ngStyle]="{'right':currentTimeTimeline}"></div>
+        <div class="timeline-tail" [ngStyle]="{'right':currentTimeTimeline}"></div>
         <img class="preview-img">
-        <div class="thumb-indicator"></div>
+
       </div>
       <div class="controls-right">
         <button id="pinp" type="button">Picture in picture</button>

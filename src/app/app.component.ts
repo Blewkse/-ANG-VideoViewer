@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, fromEvent, map, Subject, Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -18,12 +18,16 @@ export class AppComponent implements AfterViewInit, OnInit {
   videoContainer!: HTMLDivElement;
   volumeContainer!: HTMLDivElement;
   videoControls!: HTMLDivElement;
+  timeline!: HTMLDivElement;
   sliderValue$!: BehaviorSubject<number>;
+  videoTime$!: BehaviorSubject<string>;
   totalTime!: string;
   currentTime!: string;
+  currentTimeTimeline!: string;
 
   ngOnInit() {
     this.sliderValue$ = new BehaviorSubject<number>(100);
+    this.videoTime$ = new BehaviorSubject<string>('0');
   }
   ngAfterViewInit() {
     this.video = document.querySelector('#videoScreen') as HTMLVideoElement;
@@ -37,12 +41,35 @@ export class AppComponent implements AfterViewInit, OnInit {
     this.videoControls = document.querySelector(
       '#video-controls'
     ) as HTMLDivElement;
+    this.timeline = document.querySelector('#timeline') as HTMLDivElement;
 
     this.sliderValue$.subscribe((value) => {
       this.video.volume = value;
     });
+    this.videoTime$.subscribe((value) => {
+      let time = parseFloat(value);
+
+      this.currentTimeTimeline =
+        (100 - (time / this.video.duration) * 100).toString() + '%';
+    });
+
+    this.timeline.addEventListener('click', (e) => {
+      console.log(e);
+      let total = this.timeline.offsetWidth;
+      let pos = e.clientX - this.timeline.offsetLeft;
+      let ratio = pos / total;
+      this.currentTimeTimeline = (100 - ratio * 100).toString() + '%';
+      this.video.currentTime = ratio * this.video.duration;
+    });
+
     this.totalTime = this.formatDuration(this.video.duration);
     this.currentTime = this.formatDuration(this.video.currentTime);
+
+    fromEvent(this.video, 'timeupdate')
+      .pipe(map(() => this.video.currentTime))
+      .subscribe((number) => {
+        this.videoTime$.next(number.toString());
+      });
   }
   toggleVideo() {
     this.isVideoPlaying = !this.isVideoPlaying;

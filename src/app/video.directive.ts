@@ -24,7 +24,7 @@ export class VideoDirective {
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
       this.hoverFinishEvent.emit();
-    }, 5000);
+    }, 2500);
   }
 
   @HostListener('mouseout')

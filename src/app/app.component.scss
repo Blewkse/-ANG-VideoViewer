@@ -1,5 +1,5 @@
 
-.video-container{
+.video-container {
   position: relative;
   display: flex;
   justify-content: center;
@@ -7,12 +7,12 @@
 
 }
 
-video{
+video {
   width: 100%;
   transition: filter 150ms ease-in;
 }
 
-.video-controls{
+.video-controls {
   position: absolute;
   bottom: 0;
   color: white;
@@ -23,33 +23,35 @@ video{
 }
 
 
-.video-container:hover > .video-controls{
+.video-container:hover > .video-controls {
   opacity: 1;
 }
-.video-container:hover > .volume-container{
+
+.video-container:hover > .volume-container {
   opacity: 1;
 }
-.video-container:hover > video{
+
+.video-container:hover > video {
   filter: brightness(50%);
 
 }
 
-.controls{
+.controls {
   display: flex;
   flex-direction: row;
-  width:100%;
+  width: 100%;
   justify-content: space-between;
   background-color: #0B0B0B;
   align-items: center;
 }
 
-.controls-left{
+.controls-left {
   display: flex;
   flex-direction: row;
   margin-left: 1%;
 }
 
-.controls-right{
+.controls-right {
   display: flex;
   flex-direction: row;
   margin-right: 1%;
@@ -57,8 +59,7 @@ video{
 }
 
 
-
-.volume-container{
+.volume-container {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -69,10 +70,11 @@ video{
   opacity: 0;
   transition: opacity 150ms ease;
 }
-.volume-slider{
+
+.volume-slider {
   width: 70%;
   z-index: -99;
-  transform-origin:right;
+  transform-origin: right;
   transform: scaleY(0) rotate(270deg) translateY(-2rem);
   transition: transform 300ms ease-in-out;
 }
@@ -81,9 +83,37 @@ video{
   transform: scaleY(1) rotate(270deg) translateY(-2rem);
 }
 
-.timeline{
+.timeline {
   width: 100%;
   height: 4px;
-  background-color: aqua;
+  background-color: #868686;
   margin-inline: 2rem;
+  position: relative;
+
+  &:hover {
+    cursor: pointer;
+
+  }
+}
+
+.timeline-tail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: red;
+}
+
+.timeIndicator{
+  position: absolute;
+  bottom: 1.5vw;
+}
+
+.thumb-indicator{
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 100px;
+  background-color: red;
+  bottom: -8px;
 }
