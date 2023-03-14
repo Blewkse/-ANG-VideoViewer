@@ -7,10 +7,8 @@
   <div id="video-controls" class="video-controls" data-state="hidden">
     <div class="controls">
       <div class="controls-left">
-        <button *ngIf="!isVideoPlaying" (click)="toggleVideo()" class="play" type="button" data-state="play">Play
-        </button>
-        <button *ngIf="isVideoPlaying" (click)="toggleVideo()" class="play" type="button" data-state="play">Pause
-        </button>
+        <img *ngIf="!isVideoPlaying" (click)="toggleVideo()" class="play" src="../assets/Icons/pause-icon.png" data-state="play"/>
+        <img *ngIf="isVideoPlaying" (click)="toggleVideo()" class="pause" src="../assets/Icons/play-icon.png"  data-state="play"/>
         <button (click)="skip(-10)" type="button">-10</button>
         <button (click)="skip(10)" type="button">+10</button>
       </div>
@@ -21,8 +19,10 @@
         <img class="preview-img">
 
       </div>
+      <span class="totalDuration">{{totalTime}}</span>
       <div class="controls-right">
-        <button id="pinp" type="button">Picture in picture</button>
+
+        <button id="pinp" (click)="goPictureInPicture()" type="button">Picture in picture</button>
         <button id="fs" (click)="toggleFullScreen()" type="button">Fullscreen</button>
       </div>
     </div>

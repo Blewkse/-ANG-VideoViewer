@@ -53,16 +53,16 @@ export class AppComponent implements AfterViewInit, OnInit {
         (100 - (time / this.video.duration) * 100).toString() + '%';
     });
 
+    this.totalTime = this.formatDuration(this.video.duration);
     this.timeline.addEventListener('click', (e) => {
-      console.log(e);
       let total = this.timeline.offsetWidth;
       let pos = e.clientX - this.timeline.offsetLeft;
       let ratio = pos / total;
       this.currentTimeTimeline = (100 - ratio * 100).toString() + '%';
       this.video.currentTime = ratio * this.video.duration;
+      console.log(this.video.currentTime);
     });
 
-    this.totalTime = this.formatDuration(this.video.duration);
     this.currentTime = this.formatDuration(this.video.currentTime);
 
     fromEvent(this.video, 'timeupdate')
@@ -70,6 +70,9 @@ export class AppComponent implements AfterViewInit, OnInit {
       .subscribe((number) => {
         this.videoTime$.next(number.toString());
       });
+    this.video.onloadedmetadata = () => {
+      this.totalTime = this.formatDuration(this.video.duration);
+    };
   }
   toggleVideo() {
     this.isVideoPlaying = !this.isVideoPlaying;
@@ -131,5 +134,9 @@ export class AppComponent implements AfterViewInit, OnInit {
   }
   skip(duration: number) {
     this.video.currentTime += duration;
+  }
+
+  goPictureInPicture() {
+    this.video.requestPictureInPicture();
   }
 }
